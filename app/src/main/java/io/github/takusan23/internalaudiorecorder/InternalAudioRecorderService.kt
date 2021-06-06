@@ -44,13 +44,13 @@ class InternalAudioRecorderService : Service() {
         //通知チャンネルが存在しないときは登録する
         if (notificationManager.getNotificationChannel(channelID) == null) {
             val channel =
-                NotificationChannel(channelID, "内部音声録音通知", NotificationManager.IMPORTANCE_HIGH)
+                NotificationChannel(channelID, "内部声音录音通知", NotificationManager.IMPORTANCE_HIGH)
             notificationManager.createNotificationChannel(channel)
         }
         //通知作成
         val notification = Notification.Builder(applicationContext, channelID)
-            .setContentText("収録中です")
-            .setContentTitle("端末内録音")
+            .setContentText("正在录音中")
+            .setContentTitle("内部录音")
             .setSmallIcon(R.drawable.ic_outline_mic_none_24)    //アイコンはベクターアセットから
             .build()
 
@@ -128,7 +128,7 @@ class InternalAudioRecorderService : Service() {
                     codec.queueInputBuffer(index, 0, readBytes, mPresentationTime, 0)
                     // ここはAOSPパクった。経過時間を計算してる
                     totalBytesRead += readBytes
-                    mPresentationTime = 1000000L * (totalBytesRead / 2) / 44100
+                    mPresentationTime = 1000000L * (totalBytesRead / 2) / 44100 / 2
                 }
             }
 
@@ -177,7 +177,7 @@ class InternalAudioRecorderService : Service() {
         val fileDate = SimpleDateFormat("yyyyMMdd-HHmmss").format(Date())
         // MediaStoreへ保存
         val value = ContentValues().apply {
-            put(MediaStore.Audio.Media.DISPLAY_NAME, "内部音声:${fileDate}.aac")
+            put(MediaStore.Audio.Media.DISPLAY_NAME, "内部录音:${fileDate}.aac")
         }
         // ここに追加する
         val audioCollection =
