@@ -76,7 +76,7 @@ class InternalAudioRecorderService : Service() {
             val audioFormat = AudioFormat.Builder()
                 .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
                 .setSampleRate(44100)
-                .setChannelMask(AudioFormat.CHANNEL_IN_MONO)
+                .setChannelMask(AudioFormat.CHANNEL_IN_STEREO)
                 .build()
             audioRecord = AudioRecord.Builder()
                 .setAudioFormat(audioFormat)
@@ -95,13 +95,13 @@ class InternalAudioRecorderService : Service() {
 
         // mediaFormat
         val mediaFormat = MediaFormat.createAudioFormat(
-            MediaFormat.MIMETYPE_AUDIO_AAC, 44100, 1
+            MediaFormat.MIMETYPE_AUDIO_AAC, 44100, 2
         ).apply {
             setInteger(
                 MediaFormat.KEY_AAC_PROFILE,
                 MediaCodecInfo.CodecProfileLevel.AACObjectLC
             )
-            setInteger(MediaFormat.KEY_BIT_RATE, 196000)
+            setInteger(MediaFormat.KEY_BIT_RATE, 320000)
             setInteger(MediaFormat.KEY_PCM_ENCODING, AudioFormat.ENCODING_PCM_16BIT)
         }
 
